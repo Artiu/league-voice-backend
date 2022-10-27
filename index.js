@@ -1,13 +1,18 @@
 import { Server } from "socket.io";
 
-const io = new Server();
+const port = process.env.PORT || 3001;
+const io = new Server({ cors: { origin: "*" } });
 
 io.on("connection", (socket) => {
-    socket.except(socket.id).emit("userJoined", socket.id);
+    console.log(socket.id + " connected");
+    socket.broadcast.emit("userJoined", socket.id);
     socket.on("offer", (offer, to) => {
-        socket.to(to).emit("offer", offer);
+        socket.to(to).emit("offer", offer, socket.id);
     });
     socket.on("answer", (answer, to) => {
-        socket.to(to).emit("answer", answer);
+        socket.to(to).emit("answer", answer, socket.id);
     });
 });
+
+io.listen(port);
+console.log(`Listening on port ${port}`);
