@@ -12,6 +12,9 @@ io.on("connection", (socket) => {
     socket.on("answer", (answer, to) => {
         socket.to(to).emit("answer", answer, socket.id);
     });
+    socket.on("iceCandidate", (iceCandidate, to) => {
+        socket.to(to).emit("iceCandidate", iceCandidate, socket.id)
+    })
 });
 
 io.listen(port);
