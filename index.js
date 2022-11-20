@@ -1,5 +1,7 @@
 import { Server } from "socket.io";
+import { config } from "dotenv";
 
+config();
 const port = process.env.PORT || 3001;
 const io = new Server({ cors: { origin: "*" } });
 
