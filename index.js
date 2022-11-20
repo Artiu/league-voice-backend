@@ -14,7 +14,6 @@ io.on("connection", (socket) => {
     console.log(socket.id + " connected");
     const authData = { id: socket.id, token: socket.handshake.auth.token };
     socket.on("matchStart", (chatId) => {
-        console.log(socket.rooms);
         socket.join(chatId);
         socket.broadcast.to(chatId).emit("userJoined", authData);
     });

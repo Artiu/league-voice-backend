@@ -1,4 +1,4 @@
 -check is one room default
 -remove user from previous room when joining new
 -add rate limitting
--deployment NODE_ENV=production
+-deployment NODE_ENV=production, cors
