@@ -1,7 +1,3 @@
--gameID + team
-
--check is one room default
--remove user from previous room when joining new
 -buy domain
 -add rate limitting
 -deployment NODE_ENV=production, cors
