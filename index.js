@@ -5,7 +5,12 @@ import { getCurrentMatchBySummonerId, getSummonerByName } from "./riotApi.js";
 config();
 const port = process.env.PORT || 3001;
 const io = new Server({
-    cors: { origin: ["http://localhost:1420", "https://tauri.localhost"], credentials: true },
+    cors: {
+        origin: ["http://localhost:1420", "https://tauri.localhost"],
+        methods: ["GET", "POST"],
+        credentials: true,
+        transports: ["websocket", "polling"],
+    },
 });
 
 io.use(async (socket, next) => {
