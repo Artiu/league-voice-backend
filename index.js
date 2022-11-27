@@ -4,7 +4,7 @@ import { getCurrentMatchBySummonerId, getSummonerByName } from "./riotApi.js";
 
 config();
 const port = process.env.PORT || 3001;
-const io = new Server({ cors: { origin: "*" } });
+const io = new Server({ cors: { origin: ["http://localhost:1420"], credentials: true } });
 
 io.use(async (socket, next) => {
     if (!socket.handshake.auth.summonerName) {
