@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
     socket.on("matchStart", async () => {
         socket.rooms.forEach((value) => {
             if (value !== socket.id) {
-                socket.rooms.delete(value);
+                socket.leave(value);
             }
         });
         const matchData = await getCurrentMatchBySummonerId(socket.summoner.id);
