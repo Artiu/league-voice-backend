@@ -46,14 +46,8 @@ io.on("connection", (socket) => {
         console.log(`${socket.summoner.name} joined ${roomName} room`);
         socket.broadcast.to(roomName).emit("userJoined", authData);
     });
-    socket.on("offer", (offer, to) => {
-        socket.to(to).emit("offer", offer, authData);
-    });
-    socket.on("answer", (answer, to) => {
-        socket.to(to).emit("answer", answer, socket.id);
-    });
-    socket.on("iceCandidate", (iceCandidate, to) => {
-        socket.to(to).emit("iceCandidate", iceCandidate, socket.id);
+    socket.on("signaling", (data, to) => {
+        socket.to(to).emit("signaling", data, authData);
     });
 });
 
