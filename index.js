@@ -13,11 +13,11 @@ const io = new Server({
 
 io.use(async (socket, next) => {
     if (!socket.handshake.auth.summonerName) {
-        return next(new Error("Not authorized!"));
+        return next(new Error("unauthorized"));
     }
     const summonerData = await getSummonerByName(socket.handshake.auth.summonerName);
     if (!summonerData) {
-        return next(new Error("Not authorized!"));
+        return next(new Error("unauthorized"));
     }
     socket.summoner = summonerData;
     next();
