@@ -24,7 +24,9 @@ io.use(async (socket, next) => {
 });
 
 io.on("connection", (socket) => {
-    console.log(`${socket.id}(${socket.summoner.name}) connected`);
+    console.log(
+        `${socket.id}(${socket.summoner.name}) connected\nCurrent user count: ${io.engine.clientsCount}`
+    );
     const authData = { id: socket.id, summonerName: socket.summoner.name };
     socket.on("matchStart", async () => {
         socket.rooms.forEach((value) => {
