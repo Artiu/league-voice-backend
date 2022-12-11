@@ -1,10 +1,33 @@
+import express from "express";
+import { createServer } from "http";
 import { Server } from "socket.io";
 import { config } from "dotenv";
 import { getCurrentMatchBySummonerId, getSummonerByName } from "./riotApi.js";
 
 config();
 const port = process.env.PORT || 3001;
-const io = new Server({
+
+const app = express();
+const httpServer = createServer(app);
+
+const releaseAppInfo = {
+    url: "https://league-voice.site/releases/LeagueVoice.zip",
+    version: "0.0.0",
+    notes: "First release",
+    signature:
+        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYmZwaXdHbnNKTDVUM0ltN001bVBkU1N3RzlqZTUya1VuQ3JqQytpT2hxOFhIMFQ4N1hhWFlTSXJjdkZsK3lSek5NdkdkS2t5a016eFhHdmFOUjF5ekFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcwNzI5MDk1CWZpbGU6TGVhZ3VlIFZvaWNlXzAuMC4wX3g2NF9lbi1VUy5tc2kuemlwCklaT2hkZ3lhU2kwWEFXUDJoYnU4T1ZUQXEzMjRvcEtPQWdQSm8zTi9ZQTFkSFBxUzVtM04rVHh3VTNlMGVudCtFdzVpcnhzMlhGdnE5V3l1aCt4U0JnPT0K",
+};
+
+app.get("/releases/:version", (req, res) => {
+    if (req.params.version === releaseAppInfo.version) {
+        return res.status(204);
+    }
+    res.status(200).json(releaseAppInfo);
+});
+
+app.get("/releases", express.static("releases"));
+
+const io = new Server(httpServer, {
     cors: {
         origin: ["http://localhost:1420", "https://tauri.localhost"],
         credentials: true,
@@ -53,5 +76,5 @@ io.on("connection", (socket) => {
     });
 });
 
-io.listen(port);
+httpServer.listen(port);
 console.log(`Listening on port ${port}`);
