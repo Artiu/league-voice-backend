@@ -2,7 +2,6 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { config } from "dotenv";
-import cors from "cors";
 import { getCurrentMatchBySummonerId, getSummonerByName } from "./riotApi.js";
 
 config();
@@ -13,10 +12,10 @@ const httpServer = createServer(app);
 
 const releaseAppInfo = {
     url: "https://api.league-voice.site/releases/LeagueVoice.zip",
-    version: "0.0.1",
-    notes: "Fix problem with connection to the server",
+    version: "0.1.0",
+    notes: "Fix champion images",
     signature:
-        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYlhlQ1RPQVJ6ZUtFeWUxb1FGenM1ZXIyZHEvODQ5Yk1rQ0NyNUxSSU4zVnJKTjA2U01nU2twUkJSNWxuQ1JyY2gxOTdHdGhZa0FZZDFpSGlZNzIweVFRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcwNzc0MjcwCWZpbGU6TGVhZ3VlIFZvaWNlXzAuMC4xX3g2NF9lbi1VUy5tc2kuemlwCjlBTXVoWkJZcTJqc2FGNmxXNXNpSDVHajUxWm9OdWpqYXBkOFQ3SVp0WDdyZmNONzdrNm1hZi8vL2wxNXNUOHpKMmZWUzcvczlhYmpWYnJPNDZCSUJnPT0K",
+        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYlpKc3F6Y1l4YnRTdTVOb2srV2p5b2cxRHhEVFlyYXhSdkh0Sy9FTDhsT0NLR2g1ODBHMUE0Zy9jeUE4eE00WlZLbWo5MFlKNk1HSHFSQzNkcTRnUXc0PQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcwNzc2MTQ5CWZpbGU6TGVhZ3VlIFZvaWNlXzAuMS4wX3g2NF9lbi1VUy5tc2kuemlwCmw2bXFDYnV4VzFYVmJSeFhJUytiaStKNFlZOGtPM3g3ckE2eHB4c0wxNUhaNUtuOVo0M1pJZnVod3JTSTlFYWZnakwxc2tPcFQxRk5QSFVVZVBRN0FBPT0K",
 };
 
 app.use("/releases", express.static("releases"));
