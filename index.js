@@ -11,19 +11,12 @@ const port = process.env.PORT || 3001;
 const app = express();
 const httpServer = createServer(app);
 
-app.use(
-    cors({
-        origin: ["http://localhost:1420", "https://tauri.localhost"],
-        credentials: true,
-    })
-);
-
 const releaseAppInfo = {
     url: "https://api.league-voice.site/releases/LeagueVoice.zip",
-    version: "0.0.0",
-    notes: "First release",
+    version: "0.0.1",
+    notes: "Fix problem with connection to the server",
     signature:
-        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYmZwaXdHbnNKTDVUM0ltN001bVBkU1N3RzlqZTUya1VuQ3JqQytpT2hxOFhIMFQ4N1hhWFlTSXJjdkZsK3lSek5NdkdkS2t5a016eFhHdmFOUjF5ekFJPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcwNzI5MDk1CWZpbGU6TGVhZ3VlIFZvaWNlXzAuMC4wX3g2NF9lbi1VUy5tc2kuemlwCklaT2hkZ3lhU2kwWEFXUDJoYnU4T1ZUQXEzMjRvcEtPQWdQSm8zTi9ZQTFkSFBxUzVtM04rVHh3VTNlMGVudCtFdzVpcnhzMlhGdnE5V3l1aCt4U0JnPT0K",
+        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYlhlQ1RPQVJ6ZUtFeWUxb1FGenM1ZXIyZHEvODQ5Yk1rQ0NyNUxSSU4zVnJKTjA2U01nU2twUkJSNWxuQ1JyY2gxOTdHdGhZa0FZZDFpSGlZNzIweVFRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcwNzc0MjcwCWZpbGU6TGVhZ3VlIFZvaWNlXzAuMC4xX3g2NF9lbi1VUy5tc2kuemlwCjlBTXVoWkJZcTJqc2FGNmxXNXNpSDVHajUxWm9OdWpqYXBkOFQ3SVp0WDdyZmNONzdrNm1hZi8vL2wxNXNUOHpKMmZWUzcvczlhYmpWYnJPNDZCSUJnPT0K",
 };
 
 app.use("/releases", express.static("releases"));
@@ -35,7 +28,9 @@ app.get("/releases/:version", (req, res) => {
     res.status(200).json(releaseAppInfo);
 });
 
-const io = new Server(httpServer, { cors: { origin: ["http://localhost:1420", "https://tauri.localhost"], creadentials: true }});
+const io = new Server(httpServer, {
+    cors: { origin: ["http://localhost:1420", "https://tauri.localhost"] },
+});
 
 io.use(async (socket, next) => {
     if (!socket.handshake.auth.summonerName) {
