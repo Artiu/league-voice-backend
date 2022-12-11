@@ -35,7 +35,7 @@ app.get("/releases/:version", (req, res) => {
     res.status(200).json(releaseAppInfo);
 });
 
-const io = new Server(httpServer);
+const io = new Server(httpServer, { cors: { origin: ["http://localhost:1420", "https://tauri.localhost"], creadentials: true }});
 
 io.use(async (socket, next) => {
     if (!socket.handshake.auth.summonerName) {
