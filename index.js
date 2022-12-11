@@ -2,6 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { config } from "dotenv";
+import cors from "cors";
 import { getCurrentMatchBySummonerId, getSummonerByName } from "./riotApi.js";
 
 config();
@@ -9,6 +10,13 @@ const port = process.env.PORT || 3001;
 
 const app = express();
 const httpServer = createServer(app);
+
+app.use(
+    cors({
+        origin: ["http://localhost:1420", "https://tauri.localhost"],
+        credentials: true,
+    })
+);
 
 const releaseAppInfo = {
     url: "https://api.league-voice.site/releases/LeagueVoice.zip",
@@ -27,12 +35,7 @@ app.get("/releases/:version", (req, res) => {
     res.status(200).json(releaseAppInfo);
 });
 
-const io = new Server(httpServer, {
-    cors: {
-        origin: ["http://localhost:1420", "https://tauri.localhost"],
-        credentials: true,
-    },
-});
+const io = new Server(httpServer);
 
 io.use(async (socket, next) => {
     if (!socket.handshake.auth.summonerName) {
