@@ -22,7 +22,7 @@ app.use("/releases", express.static("releases"));
 
 app.get("/releases/:version", (req, res) => {
     if (req.params.version === releaseAppInfo.version) {
-        return res.status(204);
+        return res.sendStatus(204);
     }
     res.status(200).json(releaseAppInfo);
 });
