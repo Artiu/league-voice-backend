@@ -52,6 +52,7 @@ io.on("connection", (socket) => {
         socket.rooms.forEach((value) => {
             if (value !== socket.id) {
                 socket.leave(value);
+                console.log(`${socket.id}(${socket.summoner.name}) left ${value} room`);
             }
         });
         const matchData = await getCurrentMatchBySummonerId(socket.summoner.id);
@@ -69,6 +70,12 @@ io.on("connection", (socket) => {
         socket.broadcast.to(roomName).emit("userJoined", authData);
     });
     socket.on("signaling", (data, to) => {
+        let isInTheSameMatch = false;
+        socket.rooms.forEach((roomId) => {
+            if (roomId === socket.id) return;
+            isInTheSameMatch = io.sockets.sockets.get(to).rooms.has(roomId);
+        });
+        if (!isInTheSameMatch) return;
         socket.to(to).emit("signaling", data, authData);
     });
 });
