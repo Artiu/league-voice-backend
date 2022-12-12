@@ -1,2 +1,2 @@
--add rate limitting
--deployment NODE_ENV=production, cors
+-cors, deployment
+-rso
