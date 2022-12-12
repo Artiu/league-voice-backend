@@ -3,12 +3,23 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import { config } from "dotenv";
 import { getCurrentMatchBySummonerId, getSummonerByName } from "./riotApi.js";
+import { RateLimiterMemory } from "rate-limiter-flexible";
 
 config();
 const port = process.env.PORT || 3001;
 
 const app = express();
 const httpServer = createServer(app);
+
+const authRateLimiter = new RateLimiterMemory({
+    points: 5,
+    duration: 60,
+});
+
+const matchStartRateLimiter = new RateLimiterMemory({
+    points: 1,
+    duration: 1,
+});
 
 const releaseAppInfo = {
     url: "https://api.league-voice.site/releases/LeagueVoice.zip",
@@ -32,6 +43,14 @@ const io = new Server(httpServer, {
 });
 
 io.use(async (socket, next) => {
+    try {
+        await authRateLimiter.consume(socket.handshake.address);
+    } catch {
+        console.log(
+            `Ip address: ${socket.handshake.address} tried to log in more than 5 times in minute`
+        );
+        return next(new Error("rate-limit"));
+    }
     if (!socket.handshake.auth.summonerName) {
         return next(new Error("unauthorized"));
     }
@@ -55,6 +74,11 @@ io.on("connection", (socket) => {
                 console.log(`${socket.id}(${socket.summoner.name}) left ${value} room`);
             }
         });
+        try {
+            await matchStartRateLimiter.consume(socket.id);
+        } catch {
+            return;
+        }
         const matchData = await getCurrentMatchBySummonerId(socket.summoner.id);
         if (!matchData) return;
         const summonerTeam = matchData.participants.find(
@@ -69,7 +93,7 @@ io.on("connection", (socket) => {
         console.log(`${socket.summoner.name} joined ${roomName} room`);
         socket.broadcast.to(roomName).emit("userJoined", authData);
     });
-    socket.on("signaling", (data, to) => {
+    socket.on("signaling", async (data, to) => {
         let isInTheSameMatch = false;
         socket.rooms.forEach((roomId) => {
             if (roomId === socket.id) return;
