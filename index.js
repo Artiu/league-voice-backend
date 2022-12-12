@@ -24,10 +24,10 @@ const matchStartRateLimiter = new RateLimiterMemory({
 
 const releaseAppInfo = {
     url: "https://api.league-voice.site/releases/LeagueVoice.zip",
-    version: "0.2.0",
-    notes: "Fix updater",
+    version: "0.3.0",
+    notes: "Update informations about app",
     signature:
-        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYlZiYXVyZERWL2RSaDJjL3BoU3o2ZG1JMmxVZEdweTEyYTdxa2VkcUZEYzRPdC9sV0NkUXA2N0pVc1ZYY3BKdEplZmRxRFpqU2lmMUozdGhlR2xXbkFjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcwNzk0NDAyCWZpbGU6TGVhZ3VlIFZvaWNlXzAuMi4wX3g2NF9lbi1VUy5tc2kuemlwClN3UlR4VVBNOXhoWXB4Um9QU09YRkErdGk1dlk1aWlrSWJYaGZLUzIvSmVoWkJvWk1GSzROMXBPWW5EUllMbWIzU1VDRmtScTRpN2s2MG5sWTcrMUNBPT0K",
+        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYlI2cDdITklMRENNM0MxeEJLQVVLNHM5V1FneUN0ZCtyNXdRTlRXMTh2R1BmelJOSm9PNk9uUi9rTlI2cWxZN1VkYUpZWVhTQ1lnUnV2MlBDc3BRelFzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcwODgyOTk1CWZpbGU6TGVhZ3VlIFZvaWNlXzAuMy4wX3g2NF9lbi1VUy5tc2kuemlwCkZrS1lvMGJKV0dvaUNKRW41eVd2RU1WWklJUVQxRU11ZEJsUGEvL1dKWnFxK2hJNjJ0VnFzajNabTROZkVYWktJanJWcmxtN2RldWFKV25qSlZKckRnPT0K",
 };
 
 app.use(helmet());

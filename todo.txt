@@ -1,2 +1,5 @@
--cors, deployment
+-cors, deployment strony
+-button do pobrania apki na stronie tylko
+-refactor
 -rso
+-ads, support creator
