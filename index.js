@@ -43,7 +43,9 @@ app.get("/releases/:version", (req, res) => {
 });
 
 const io = new Server(httpServer, {
-    cors: { origin: ["http://localhost:1420", "https://tauri.localhost"] },
+    cors: {
+        origin: ["http://localhost:1420", "https://tauri.localhost", "https://league-voice.site"],
+    },
 });
 
 io.use(async (socket, next) => {
