@@ -72,13 +72,17 @@ io.on("connection", (socket) => {
         `${socket.id}(${socket.summoner.name}) connected\nCurrent user count: ${io.engine.clientsCount}`
     );
     const authData = { id: socket.id, summonerName: socket.summoner.name };
-    socket.on("matchStart", async () => {
+    const leavePreviousCall = () => {
         socket.rooms.forEach((value) => {
             if (value !== socket.id) {
+                socket.to(value).emit("userLeft", authData);
                 socket.leave(value);
                 console.log(`${socket.id}(${socket.summoner.name}) left ${value} room`);
             }
         });
+    };
+
+    socket.on("matchStart", async () => {
         try {
             await matchStartRateLimiter.consume(socket.id);
         } catch {
@@ -92,13 +96,21 @@ io.on("connection", (socket) => {
         const teammates = matchData.participants.filter(
             (participant) => participant.teamId === summonerTeam
         );
-        socket.emit("matchStarted", teammates);
         const roomName = matchData.gameId + "-" + summonerTeam;
+        if (
+            (await io.in(roomName).fetchSockets()).find(
+                (socketFromRoom) => socketFromRoom.summoner.name === authData.summonerName
+            )
+        ) {
+            socket.emit("matchStarted", { error: "account-currently-in-room" });
+            return;
+        }
+        socket.emit("matchStarted", teammates);
         socket.join(roomName);
         console.log(`${socket.summoner.name} joined ${roomName} room`);
         socket.broadcast.to(roomName).emit("userJoined", authData);
     });
-    socket.on("signaling", async (data, to) => {
+    socket.on("signaling", (data, to) => {
         let isInTheSameMatch = false;
         socket.rooms.forEach((roomId) => {
             if (roomId === socket.id) return;
@@ -106,6 +118,9 @@ io.on("connection", (socket) => {
         });
         if (!isInTheSameMatch) return;
         socket.to(to).emit("signaling", data, authData);
+    });
+    socket.on("leaveCall", () => {
+        leavePreviousCall(socket);
     });
 });
 
