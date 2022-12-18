@@ -49,12 +49,11 @@ const io = new Server(httpServer, {
 });
 
 io.use(async (socket, next) => {
+    const ip = socket.handshake.headers["X-Real-IP"];
     try {
-        await authRateLimiter.consume(socket.handshake.address);
+        await authRateLimiter.consume(ip);
     } catch {
-        console.log(
-            `Ip address: ${socket.handshake.address} tried to log in more than 5 times in minute`
-        );
+        console.log(`Ip address: ${ip} tried to log in more than 5 times in minute`);
         return next(new Error("rate-limit"));
     }
     if (!socket.handshake.auth.summonerName) {
