@@ -49,7 +49,7 @@ const io = new Server(httpServer, {
 });
 
 io.use(async (socket, next) => {
-    const ip = socket.handshake.headers["X-Real-IP"];
+    const ip = socket.handshake.headers["x-real-ip"];
     try {
         await authRateLimiter.consume(ip);
     } catch {
