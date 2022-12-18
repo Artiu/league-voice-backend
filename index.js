@@ -103,7 +103,7 @@ io.on("connection", (socket) => {
         let isInTheSameMatch = false;
         socket.rooms.forEach((roomId) => {
             if (roomId === socket.id) return;
-            isInTheSameMatch = io.sockets.sockets.get(to).rooms.has(roomId);
+            isInTheSameMatch = io.sockets.sockets.get(to)?.rooms.has(roomId);
         });
         if (!isInTheSameMatch) return;
         socket.to(to).emit("signaling", data, authData);
