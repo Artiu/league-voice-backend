@@ -81,8 +81,7 @@ io.on("connection", (socket) => {
             }
         });
     };
-
-    socket.on("matchStart", async () => {
+    const onMatchStarted = async () => {
         try {
             await matchStartRateLimiter.consume(socket.id);
         } catch {
@@ -109,8 +108,9 @@ io.on("connection", (socket) => {
         socket.join(roomName);
         console.log(`${socket.summoner.name} joined ${roomName} room`);
         socket.broadcast.to(roomName).emit("userJoined", authData);
-    });
-    socket.on("signaling", (data, to) => {
+    };
+
+    const onSignaling = (data, to) => {
         let isInTheSameMatch = false;
         socket.rooms.forEach((roomId) => {
             if (roomId === socket.id) return;
@@ -118,9 +118,15 @@ io.on("connection", (socket) => {
         });
         if (!isInTheSameMatch) return;
         socket.to(to).emit("signaling", data, authData);
-    });
+    };
+
+    socket.on("matchStart", onMatchStarted);
+    socket.on("signaling", onSignaling);
     socket.on("leaveCall", () => {
-        leavePreviousCall(socket);
+        leavePreviousCall();
+    });
+    socket.on("disconnecting", () => {
+        leavePreviousCall();
     });
 });
 
