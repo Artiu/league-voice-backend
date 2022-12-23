@@ -24,10 +24,10 @@ const matchStartRateLimiter = new RateLimiterMemory({
 
 const releaseAppInfo = {
     url: "https://api.league-voice.site/releases/LeagueVoice.zip",
-    version: "0.5.0",
-    notes: "Fixed issues with rejoining room after backend restart",
+    version: "0.5.1",
+    notes: "Fixed doubled connections after server restart",
     signature:
-        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYllldFJjZGQvSGdsYVhPejRjZ1p2Tmd1S29ybk1QTnd6dTQweVIwOFV0dkovTUFTNE1DUERCZ3pwbngwSnRrYUJmS295MlI4Vys2dEVscHNCSWF6NmdzPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcxNjQwNDUxCWZpbGU6TGVhZ3VlIFZvaWNlXzAuNS4wX3g2NF9lbi1VUy5tc2kuemlwCnBYemR0R042Y0pLWEU4S0VzekpxaG14SE83YzFGRkMzUjVKMVUrSU1Mc1crQ1dBSjFUdENvcWRGVldCY1h1c3kyTi9penNUeFJlQjFhelVvbzRMT0NnPT0K",
+        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYlQzYmdNeXk2dDJkYlJUMVdCMDhsVG9kNm4zektZdCtSSG5PSkhwb2NNUDFpcVp1NjA2UWRqQUJCTkt0dWFpV0lHWnByVU5KbGdSbUVjV1diR1V1dXdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcxNzU0MTE4CWZpbGU6TGVhZ3VlIFZvaWNlXzAuNS4xX3g2NF9lbi1VUy5tc2kuemlwCnM2K2JURHM5ZjJQam9jR3lpakE2aHlicEVvVGthSlFjcVE1T1o4NDJKb0h2TkZyREN6MGNIZElZcFZRbDBTYk1nT2FRREd0UzhBZGJ4YThhSGdONkN3PT0K",
 };
 
 app.use(helmet());
