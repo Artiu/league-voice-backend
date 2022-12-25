@@ -24,10 +24,10 @@ const matchStartRateLimiter = new RateLimiterMemory({
 
 const releaseAppInfo = {
     url: "https://api.league-voice.site/releases/LeagueVoice.zip",
-    version: "0.5.1",
-    notes: "Fixed doubled connections after server restart",
+    version: "0.5.2",
+    notes: "Fixes",
     signature:
-        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYlQzYmdNeXk2dDJkYlJUMVdCMDhsVG9kNm4zektZdCtSSG5PSkhwb2NNUDFpcVp1NjA2UWRqQUJCTkt0dWFpV0lHWnByVU5KbGdSbUVjV1diR1V1dXdRPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcxNzU0MTE4CWZpbGU6TGVhZ3VlIFZvaWNlXzAuNS4xX3g2NF9lbi1VUy5tc2kuemlwCnM2K2JURHM5ZjJQam9jR3lpakE2aHlicEVvVGthSlFjcVE1T1o4NDJKb0h2TkZyREN6MGNIZElZcFZRbDBTYk1nT2FRREd0UzhBZGJ4YThhSGdONkN3PT0K",
+        "dW50cnVzdGVkIGNvbW1lbnQ6IHNpZ25hdHVyZSBmcm9tIHRhdXJpIHNlY3JldCBrZXkKUlVRS0ViL2tKVmwwYmJyY1RXbWhNY0JsTklWNmRxVUVsbG96Y09LQVhBc3VQR2RFRnlWM0I0NCtBMWJnNllVa2NEZlRsWDVjd0Q2NWNTRzhkV3pFTlVWbDd1emtXREN1bWdjPQp0cnVzdGVkIGNvbW1lbnQ6IHRpbWVzdGFtcDoxNjcyMDEwNjAxCWZpbGU6TGVhZ3VlIFZvaWNlXzAuNS4yX3g2NF9lbi1VUy5tc2kuemlwCjE0TGRHbmN4dTlCWE9OT0R3OExKQnZrSy9Bd0JvUG0yWW9wRlJIV3RhaVFuaW9Jd3pzTytEeXZ0d2FjM3VEeHZXZ3RvRjhGaGVHSWp2S2VIakVZMEJ3PT0K",
 };
 
 app.use(helmet());
