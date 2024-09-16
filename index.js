@@ -2,7 +2,7 @@ import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
 import { config } from "dotenv";
-import { getCurrentMatchBySummonerId, getSummonerByName } from "./riotApi.js";
+import { getCurrentMatchBySummonerId, getSummoner } from "./riotApi.js";
 import { RateLimiterMemory } from "rate-limiter-flexible";
 import helmet from "helmet";
 
@@ -60,28 +60,35 @@ io.use(async (socket, next) => {
 		console.log(`Ip address: ${ip} tried to log in more than 5 times in minute`);
 		return next(new Error("rate-limit"));
 	}
-	if (!socket.handshake.auth.summonerName) {
+	if (!socket.handshake.auth.username || !socket.handshake.auth.tag) {
 		return next(new Error("unauthorized"));
 	}
-	const summonerData = await getSummonerByName(socket.handshake.auth.summonerName);
+	const summonerData = await getSummoner(
+		socket.handshake.auth.username,
+		socket.handshake.auth.tag
+	);
 	if (!summonerData) {
 		return next(new Error("unauthorized"));
 	}
-	socket.summoner = summonerData;
+	socket.summoner = {
+		puuid: summonerData.puuid,
+		riotId: `${summonerData.gameName}#${summonerData.tagLine}`,
+	};
 	next();
 });
 
 io.on("connection", (socket) => {
 	console.log(
-		`${socket.id}(${socket.summoner.name}) connected\nCurrent user count: ${io.engine.clientsCount}`
+		`${socket.id}(${socket.summoner.riotId}) connected\nCurrent user count: ${io.engine.clientsCount}`
 	);
-	const authData = { id: socket.id, summonerName: socket.summoner.name };
+	const authData = { id: socket.id, riotId: socket.summoner.riotId };
+
 	const leavePreviousCall = () => {
 		socket.rooms.forEach((value) => {
 			if (value !== socket.id) {
 				socket.to(value).emit("userLeft", authData);
 				socket.leave(value);
-				console.log(`${socket.id}(${socket.summoner.name}) left ${value} room`);
+				console.log(`${socket.id}(${socket.summoner.riotId}) left ${value} room`);
 			}
 		});
 	};
@@ -91,10 +98,10 @@ io.on("connection", (socket) => {
 		} catch {
 			return;
 		}
-		const matchData = await getCurrentMatchBySummonerId(socket.summoner.id);
+		const matchData = await getCurrentMatchBySummonerId(socket.summoner.puuid);
 		if (!matchData) return;
 		const summonerTeam = matchData.participants.find(
-			(participant) => participant.summonerName === socket.summoner.name
+			(participant) => participant.riotId === socket.summoner.riotId
 		).teamId;
 		const teammates = matchData.participants.filter(
 			(participant) => participant.teamId === summonerTeam
@@ -102,7 +109,7 @@ io.on("connection", (socket) => {
 		const roomName = matchData.gameId + "-" + summonerTeam;
 		if (
 			(await io.in(roomName).fetchSockets()).find(
-				(socketFromRoom) => socketFromRoom.summoner.name === authData.summonerName
+				(socketFromRoom) => socketFromRoom.summoner.riotId === socket.summoner.riotId
 			)
 		) {
 			socket.emit("matchStarted", { error: "account-currently-in-room" });
