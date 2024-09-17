@@ -117,7 +117,7 @@ io.on("connection", (socket) => {
 		}
 		socket.emit("matchStarted", teammates);
 		socket.join(roomName);
-		console.log(`${socket.summoner.name} joined ${roomName} room`);
+		console.log(`${socket.summoner.riotId} joined ${roomName} room`);
 		socket.broadcast.to(roomName).emit("userJoined", authData);
 	};
 
